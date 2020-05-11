@@ -14,6 +14,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::namespace('Api')->group(function () {
+
+    Route::post('login', 'AuthController@login');
+    Route::post('signup', 'AuthController@signup');
+    Route::get('signup/activate/{token}', 'AuthController@signupActivate');
+
+    //password reset routes
+    Route::group(['middleware' => 'api', 'prefix' => 'password'], function () {
+        Route::post('create', 'PasswordResetController@create');
+        Route::get('find/{token}', 'Auth\PasswordResetController@find');
+        Route::post('reset', 'Auth\PasswordResetController@reset');
+    });
+
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::get('logout', 'AuthController@logout');
+        Route::get('user', 'AuthController@user');
+
+        Route::resource('users', 'UsersController');
+        Route::post('user/avatar', 'UsersController@avatar');
+    });
 });
