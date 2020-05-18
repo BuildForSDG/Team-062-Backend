@@ -24,8 +24,8 @@ Route::namespace('Api')->group(function () {
     //password reset routes
     Route::group(['middleware' => 'api', 'prefix' => 'password'], function () {
         Route::post('create', 'PasswordResetController@create');
-        Route::get('find/{token}', 'Auth\PasswordResetController@find');
-        Route::post('reset', 'Auth\PasswordResetController@reset');
+        Route::get('find/{token}', 'PasswordResetController@find');
+        Route::post('reset', 'PasswordResetController@reset');
     });
 
     Route::group(['middleware' => 'auth:api'], function () {
